@@ -2,58 +2,68 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-
-use App\Enum\RoleEnum;
-use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Orchid\Filters\Types\Like;
+use Orchid\Filters\Types\Where;
+use Orchid\Filters\Types\WhereDateStartEnd;
+use Orchid\Platform\Models\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
-
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
-    protected $table = 'users';
-
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int, string>
+     * @var array
      */
     protected $fillable = [
         'name',
         'email',
         'password',
-        'role_id',
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * The attributes excluded from the model's JSON form.
      *
-     * @var array<int, string>
+     * @var array
      */
     protected $hidden = [
         'password',
         'remember_token',
+        'permissions',
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * The attributes that should be cast to native types.
      *
-     * @return array<string, string>
+     * @var array
      */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-            'role_id' => RoleEnum::class,
-        ];
-    }
+    protected $casts = [
+        'permissions'          => 'array',
+        'email_verified_at'    => 'datetime',
+    ];
+
+    /**
+     * The attributes for which you can use filters in url.
+     *
+     * @var array
+     */
+    protected $allowedFilters = [
+           'id'         => Where::class,
+           'name'       => Like::class,
+           'email'      => Like::class,
+           'updated_at' => WhereDateStartEnd::class,
+           'created_at' => WhereDateStartEnd::class,
+    ];
+
+    /**
+     * The attributes for which can use sort in url.
+     *
+     * @var array
+     */
+    protected $allowedSorts = [
+        'id',
+        'name',
+        'email',
+        'updated_at',
+        'created_at',
+    ];
 }

@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('roles', function (Blueprint $table) {
-            $table->id();
+        Schema::create('roles', function (Blueprint $table): void {
+            $table->increments('id');
+            $table->string('slug')->unique();
             $table->string('name');
+            $table->jsonb('permissions')->nullable();
             $table->timestamps();
         });
     }
