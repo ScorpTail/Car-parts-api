@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('car_models', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Brand::class);
+            $table->foreignIdFor(Brand::class)->cascadeOnDelete();
             $table->string('name');
         });
     }
