@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Orchid\Screen\AsSource;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class CarModel extends Model
 {
-    use HasFactory;
+    use HasFactory, AsSource;
 
     /**
      * The table associated with the model.
@@ -22,4 +26,9 @@ class CarModel extends Model
      * @var array<string>
      */
     protected $fillable = ['brand_id', 'name'];
+
+    public function brand(): BelongsTo
+    {
+        return $this->belongsTo(Brand::class);
+    }
 }
