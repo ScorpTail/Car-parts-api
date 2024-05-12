@@ -2,9 +2,16 @@
 
 namespace App\Orchid\Screens\Brands;
 
+use App\Http\Requests\Barnd\BrandRequest;
 use App\Models\Brand;
-use App\Orchid\Layouts\Brands\BrandTable;
+use App\Orchid\Layouts\Brands\BrandInput;
 use Orchid\Screen\Screen;
+use Orchid\Screen\Fields\Input;
+use Orchid\Support\Facades\Toast;
+use Orchid\Support\Facades\Layout;
+
+use Orchid\Screen\Actions\ModalToggle;
+use App\Orchid\Layouts\Brands\BrandTable;
 
 class BrandScreen extends Screen
 {
@@ -37,7 +44,12 @@ class BrandScreen extends Screen
      */
     public function commandBar(): iterable
     {
-        return [];
+        return [
+            ModalToggle::make('Додати новий бренд')
+                ->modal('createBrand')
+                ->method('store')
+                ->icon('plus'),
+        ];
     }
 
     /**
@@ -49,6 +61,40 @@ class BrandScreen extends Screen
     {
         return [
             BrandTable::class,
+            Layout::modal('createBrand', BrandInput::class)
+                ->title('Додаваня нового бренду автомобіля')
+                ->applyButton('Додати'),
+
+            Layout::modal('updateBrand', BrandInput::class)
+                ->applyButton('Відредагувати')
+                ->async('asyncGetBrand'),
+        ];
+    }
+
+    public function store(BrandRequest $request)
+    {
+        $data = $request->validated();
+        Brand::create($data['brand']);
+        Toast::info('Бренд успішно додано');
+    }
+
+    public function update(Brand $brand, BrandRequest $request)
+    {
+        $data = $request->validated();
+        $brand->update($data['brand']);
+        Toast::info('Бренд успішно змінено');
+    }
+
+    public function destroy(Brand $brand)
+    {
+        $brand->delete();
+        Toast::info('Бренд успішно видалено');
+    }
+
+    public function asyncGetBrand(Brand $brand): array
+    {
+        return [
+            'brand' => $brand
         ];
     }
 }

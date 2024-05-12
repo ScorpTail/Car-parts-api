@@ -2,11 +2,14 @@
 
 namespace App\Orchid\Layouts\Brands;
 
+use App\Models\Brand;
 use Orchid\Screen\TD;
 use Orchid\Support\Color;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Fields\Group;
 use Orchid\Screen\Layouts\Table;
+use Orchid\Screen\Actions\Button;
+use Orchid\Screen\Actions\ModalToggle;
 use Illuminate\Database\Eloquent\Model;
 
 class BrandTable extends Table
@@ -45,10 +48,22 @@ class BrandTable extends Table
             TD::make('actions', 'Дії')
                 ->width('300px')
                 ->align(TD::ALIGN_CENTER)
-                ->render(function ($brand) {
+                ->render(function (Brand $brand) {
                     return Group::make([
-                        Link::make('Редагувати')->icon('pencil'),
-                        Link::make('Видалити')->icon('trash')->type(COLOR::ERROR),
+                        ModalToggle::make('Редагувати')
+                            ->modalTitle('Редагувати бренд: ' . $brand->name)
+                            ->modal('updateBrand')
+                            ->method('update')
+                            ->asyncParameters([
+                                'brand' => $brand->id
+                            ])
+                            ->icon('pencil'),
+                        Button::make('Видалити')
+                            ->method('destroy')
+                            ->confirm('Ви впевнені, що хочете видалити цей бренд?')
+                            ->parameters(['brand' => $brand->id])
+                            ->icon('trash')
+                            ->type(COLOR::DANGER),
                     ])->autoWidth();
                 }),
         ];

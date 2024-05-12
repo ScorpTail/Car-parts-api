@@ -25,6 +25,13 @@ class Brand extends Model
      */
     protected $fillable = ['name'];
 
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
+
     public function models(): HasMany
     {
         return $this->hasMany(CarModel::class);
