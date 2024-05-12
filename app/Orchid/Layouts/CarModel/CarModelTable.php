@@ -3,10 +3,13 @@
 namespace App\Orchid\Layouts\CarModel;
 
 use Orchid\Screen\TD;
+use App\Models\CarModel;
 use Orchid\Support\Color;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Fields\Group;
 use Orchid\Screen\Layouts\Table;
+use Orchid\Screen\Actions\Button;
+use Orchid\Screen\Actions\ModalToggle;
 use Illuminate\Database\Eloquent\Model;
 
 class CarModelTable extends Table
@@ -19,7 +22,7 @@ class CarModelTable extends Table
      *
      * @var string
      */
-    protected $target = 'models';
+    protected $target = 'carModels';
 
     /**
      * Get the table cells to be displayed.
@@ -48,10 +51,20 @@ class CarModelTable extends Table
             TD::make('actions', 'Дії')
                 ->width('300px')
                 ->align(TD::ALIGN_CENTER)
-                ->render(function ($brand) {
+                ->render(function (CarModel $carModel) {
                     return Group::make([
-                        Link::make('Редагувати')->icon('pencil'),
-                        Link::make('Видалити')->icon('trash')->type(Color::ERROR),
+                        ModalToggle::make('Редагувати')
+                            ->modalTitle('Редагувати модель: ' . $carModel->name)
+                            ->modal('updateCarModel')
+                            ->method('update')
+                            ->asyncParameters(['carModel' => $carModel->id])
+                            ->icon('pencil'),
+                        Button::make('Видалити')
+                            ->method('destroy')
+                            ->confirm('Ви впевнені, що хочете видалити цю модель?')
+                            ->parameters(['carModel' => $carModel->id])
+                            ->icon('trash')
+                            ->type(COLOR::DANGER),
                     ])->autoWidth();
                 }),
         ];

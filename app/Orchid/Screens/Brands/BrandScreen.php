@@ -6,7 +6,6 @@ use App\Http\Requests\Barnd\BrandRequest;
 use App\Models\Brand;
 use App\Orchid\Layouts\Brands\BrandInput;
 use Orchid\Screen\Screen;
-use Orchid\Screen\Fields\Input;
 use Orchid\Support\Facades\Toast;
 use Orchid\Support\Facades\Layout;
 

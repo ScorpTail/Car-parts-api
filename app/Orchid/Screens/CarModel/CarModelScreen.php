@@ -3,8 +3,13 @@
 namespace App\Orchid\Screens\CarModel;
 
 use App\Models\CarModel;
-use App\Orchid\Layouts\CarModel\CarModelTable;
 use Orchid\Screen\Screen;
+use Orchid\Support\Facades\Toast;
+use Orchid\Support\Facades\Layout;
+use Orchid\Screen\Actions\ModalToggle;
+use App\Orchid\Layouts\CarModel\CarModelInput;
+use App\Orchid\Layouts\CarModel\CarModelTable;
+use App\Http\Requests\CarModel\CarModelRequest;
 
 class CarModelScreen extends Screen
 {
@@ -16,7 +21,7 @@ class CarModelScreen extends Screen
     public function query(): iterable
     {
         return [
-            'models' => CarModel::paginate(10),
+            'carModels' => CarModel::paginate(10),
         ];
     }
 
@@ -37,7 +42,12 @@ class CarModelScreen extends Screen
      */
     public function commandBar(): iterable
     {
-        return [];
+        return [
+            ModalToggle::make('Додати нову модель автомобіля')
+                ->modal('storeCarModel')
+                ->method('store')
+                ->icon('plus'),
+        ];
     }
 
     /**
@@ -49,6 +59,40 @@ class CarModelScreen extends Screen
     {
         return [
             CarModelTable::class,
+            Layout::modal('storeCarModel', CarModelInput::class)
+                ->applyButton('Додати')
+                ->title('Додати нову модель автомобілю'),
+
+            Layout::modal('updateCarModel', CarModelInput::class)
+                ->applyButton('Відредагувати')
+                ->async('asyncGetCarModel'),
+        ];
+    }
+
+    public function store(CarModelRequest $request)
+    {
+        $data = $request->validated();
+        CarModel::create($data['carModel']);
+        Toast::success('Нову модель успішно додано');
+    }
+
+    public function update(CarModel $carModel, CarModelRequest $request)
+    {
+        $data = $request->validated();
+        $carModel->update($data['carModel']);
+        Toast::success('Модель оновлено успішно');
+    }
+
+    public function destroy(CarModel $carModel)
+    {
+        $carModel->delete();
+        Toast::success('Модель було видалено');
+    }
+
+    public function asyncGetCarModel(CarModel $carModel): array
+    {
+        return [
+            'carModel' => $carModel
         ];
     }
 }
