@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Auth\LoginRequest;
+use Laravel\Sanctum\PersonalAccessToken;
 use App\Services\AuthServices\AuthService;
 use App\Http\Requests\Auth\RegisterRequest;
 
@@ -20,41 +22,62 @@ class AuthController extends Controller
     {
         $registeredData = $request->validated();
 
-        $this->authService->createuser($registeredData);
-
-        [$token, $refreshToken] = $this->authService->createTokenForUser($registeredData);
+        [$token, $refreshToken] = $this->authService->register($registeredData);
 
         return response()->json(
             [
                 'message' => 'Success registration',
-                'token' => $token, 'refreshToken' => $refreshToken,
+                'token' => $token,
+                'refreshToken' => $refreshToken,
             ],
             Response::HTTP_CREATED
         );
     }
 
+
     public function login(LoginRequest $request)
     {
         $data = $request->validated();
 
-        [$token, $refreshToken] = $this->authService->createTokenForUser($data);
+        if (!$this->authService->checkAuthUser($data)) {
+            return response()->json(['message' => 'Помилка аутентифікації'], Response::HTTP_UNAUTHORIZED);
+        }
+
+        [$token, $refreshToken] = $this->authService->createTokenForUser(Auth::user());
 
         return response()->json(
             [
-                'message' => 'Success registration',
-                'token' => $token, 'refreshToken' => $refreshToken,
+                'message' => 'Success authentication',
+                'token' => $token,
+                'refreshToken' => $refreshToken,
             ],
             Response::HTTP_OK
         );
     }
 
+
     public function logout(Request $request)
     {
-        if ($request->user()->currentAccessToken()->name == 'refreshToken') {
-            return response()->json(['message' => 'Unauthorized.'], Response::HTTP_UNAUTHORIZED);
-        }
-        auth()->user()->tokens()->delete();
+        $request->user()->tokens()->delete();
 
         return response()->noContent();
+    }
+
+    public function refresh(Request $request)
+    {
+        $token = PersonalAccessToken::findToken($request->bearerToken());
+
+        $user = $token->tokenable;
+
+        [$token, $refreshToken] = $this->authService->createTokenForUser($user);
+
+        return response()->json(
+            [
+                'message' => 'Regenerated tokens',
+                'token' => $token,
+                'refreshToken' => $refreshToken,
+            ],
+            Response::HTTP_OK
+        );
     }
 }

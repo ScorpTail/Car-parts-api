@@ -3,31 +3,22 @@
 namespace App\Services\AuthServices;
 
 use App\Models\User;
+use App\Enum\TokenAbility;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\Auth\RegisterRequest;
 
 
 class AuthService
 {
-    public function createTokenForUser($user): array
+
+    public function register($registeredData)
     {
-        self::checkAuthUser($user);
+        $user = $this->createUser($registeredData);
 
-        $this->destroyToken();
-
-        $token = Auth::user()->createToken('accesToken')->plainTextToken;
-
-        $refreshToken = Auth::user()->createToken('refreshToken')->plainTextToken;
+        [$token, $refreshToken] = $this->createTokenForUser($user);
 
         return [$token, $refreshToken];
-    }
-
-    public function checkAuthUser(array $user)
-    {
-        if (!Auth::attempt($user)) {
-
-            return response()->json(['message' => 'Failed authentication'], Response::HTTP_UNAUTHORIZED);
-        }
     }
 
     public function createUser($registeredData): User
@@ -35,8 +26,24 @@ class AuthService
         return User::create($registeredData);
     }
 
-    private function destroyToken()
+    public function createTokenForUser($user): array
     {
-        return auth()->user()->tokens()->delete();
+        $this->destroyToken($user);
+
+        $token = $user->createToken('accessToken', [TokenAbility::ACCESS_TOKEN->value])->plainTextToken;
+
+        $refreshToken = $user->createToken('refreshToken', [TokenAbility::REFRESH_TOKEN->value])->plainTextToken;
+
+        return [$token, $refreshToken];
+    }
+
+    public function checkAuthUser(array $user)
+    {
+        return Auth::attempt($user);
+    }
+
+    private function destroyToken($user)
+    {
+        return $user->tokens()->delete();
     }
 }
