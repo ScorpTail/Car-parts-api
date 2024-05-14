@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\StatusProductCast;
 use App\Enum\StatusProductEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -30,6 +31,11 @@ class Part extends Model
      * @var array
      */
     protected $casts = [
-        'status' => StatusProductEnum::class,
+        'status' => StatusProductCast::class,
     ];
+
+    public function emptyDeletedAtRows(): bool
+    {
+        return isset($this->deleted_at);
+    }
 }

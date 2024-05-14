@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Brand;
 
+use App\Models\Brand;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Resources\Brand\BrandResource;
+use App\Http\Resources\Brand\BrandResourceCollection;
 
 class BrandController extends Controller
 {
@@ -12,38 +14,15 @@ class BrandController extends Controller
      */
     public function index()
     {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+        return BrandResource::collection(Brand::all());
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Brand $brand)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return BrandResource::make($brand);
     }
 }

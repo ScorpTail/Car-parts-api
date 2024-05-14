@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\CarModel;
 
-use App\Http\Controllers\Controller;
+use App\Models\CarModel;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\CarModel\CarModelResource;
 
 class CarModelController extends Controller
 {
@@ -12,38 +14,14 @@ class CarModelController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+        return CarModelResource::collection(CarModel::all());
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(CarModel $carModel)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return CarModelResource::make($carModel);
     }
 }
