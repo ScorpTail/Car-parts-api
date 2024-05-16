@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
-use App\Casts\StatusProductCast;
 use App\Enum\StatusProductEnum;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Casts\StatusProductCast;
+use Database\Factories\CarPartFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Part extends Model
 {
@@ -33,6 +35,14 @@ class Part extends Model
     protected $casts = [
         'status' => StatusProductCast::class,
     ];
+
+    /**
+     * Create a new factory instance for the model.
+     */
+    protected static function newFactory(): Factory
+    {
+        return CarPartFactory::new();
+    }
 
     public function emptyDeletedAtRows(): bool
     {

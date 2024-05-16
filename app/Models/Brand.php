@@ -23,7 +23,7 @@ class Brand extends Model
      *
      * @var array<string>
      */
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'image_path'];
 
     /**
      * Indicates if the model should be timestamped.
