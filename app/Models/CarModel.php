@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Orchid\Screen\AsSource;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class CarModel extends Model
 {
@@ -23,7 +24,7 @@ class CarModel extends Model
      *
      * @var array<string>
      */
-    protected $fillable = ['brand_id', 'name'];
+    protected $fillable = ['brand_id', 'name', 'image_path'];
 
     /**
      * Indicates if the model should be timestamped.
@@ -35,5 +36,10 @@ class CarModel extends Model
     public function brand(): BelongsTo
     {
         return $this->belongsTo(Brand::class);
+    }
+
+    public function garages(): BelongsToMany
+    {
+        return $this->belongsToMany(CarModel::class, 'garages', 'car_model_id', 'user_id');
     }
 }

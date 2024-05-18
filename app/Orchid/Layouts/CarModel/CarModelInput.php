@@ -6,6 +6,7 @@ use App\Models\Brand;
 use Orchid\Screen\Field;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Layouts\Rows;
+use Orchid\Screen\Fields\Picture;
 use Orchid\Screen\Fields\Relation;
 
 class CarModelInput extends Rows
@@ -33,6 +34,13 @@ class CarModelInput extends Rows
                 ->fromModel(Brand::class, 'name')
                 ->title('Марка машини')
                 ->placeholder('Оберіть марку мащини...')
+                ->required(),
+            Picture::make('carModel.image_path')
+                ->acceptedFiles('image/*')
+                ->maxFileSize(1)
+                ->placeholder('Зображення бренду')
+                ->help('Додайте зображення бренду')
+                ->title('Бренд')
                 ->required(),
         ];
     }

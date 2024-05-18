@@ -4,6 +4,7 @@ namespace App\Orchid\Layouts\CarModel;
 
 use Orchid\Screen\TD;
 use App\Models\CarModel;
+use App\Services\ImageServices\ImageService;
 use Orchid\Support\Color;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Fields\Group;
@@ -14,6 +15,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class CarModelTable extends Table
 {
+
+    public function __construct(private ImageService $service)
+    {
+    }
     /**
      * Data source.
      *
@@ -43,6 +48,10 @@ class CarModelTable extends Table
             TD::make('id', 'ID')
                 ->align(TD::ALIGN_LEFT),
 
+            TD::make('checkCarModelPhoto', 'Фото Автомобіля')
+                ->width('50px')
+                ->render(fn (CarModel $carModel) => $this->linkToTheImage($carModel)),
+
             TD::make('brand_id', 'Назва бренду машини')
                 ->render(fn ($model) => $model->brand->name),
 
@@ -68,5 +77,19 @@ class CarModelTable extends Table
                     ])->autoWidth();
                 }),
         ];
+    }
+
+    private function linkToTheImage($model): Group
+    {
+        $fileExists = $this->service->isImageExists($model);
+        return $fileExists
+            ? Group::make([
+                Link::make()
+                    ->href($model->image_path)
+                    ->target('_blank')
+                    ->asyncParameters(['carModel' => $model->id])
+                    ->icon('bs.box-arrow-up-right')
+            ])
+            : Group::make([]);
     }
 }

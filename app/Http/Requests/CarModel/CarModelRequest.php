@@ -21,9 +21,17 @@ class CarModelRequest extends FormRequest
      */
     public function rules(): array
     {
+        if ($this->is('admin/*')) {
+            return  [
+                'carModel.brand_id' => ['required', 'exists:brands,id', 'integer'],
+                'carModel.name' => ['required', 'min:3', 'max:100'],
+                'carModel.image_path' => ['required', 'string'],
+            ];
+        }
         return [
             'carModel.brand_id' => ['required', 'exists:brands,id', 'integer'],
-            'carModel.name' => ['required', 'string'],
+            'carModel.name' => ['required', 'min:3', 'max:100'],
+            'carModel.image_path' => ['required', 'image', 'max:8192', 'mimes:png,jpg,jpeg,webp'],
         ];
     }
 }
