@@ -6,13 +6,14 @@ use Tabuna\Breadcrumbs\Trail;
 use Illuminate\Support\Facades\Route;
 use App\Orchid\Screens\PlatformScreen;
 use App\Orchid\Screens\Brands\BrandScreen;
-use App\Orchid\Screens\CarModel\CarModelScreen;
 use App\Orchid\Screens\Role\RoleEditScreen;
 use App\Orchid\Screens\Role\RoleListScreen;
 use App\Orchid\Screens\User\UserEditScreen;
 use App\Orchid\Screens\User\UserListScreen;
+use App\Orchid\Screens\CarPart\CarPartScreen;
 use App\Orchid\Screens\Examples\ExampleScreen;
 use App\Orchid\Screens\User\UserProfileScreen;
+use App\Orchid\Screens\CarModel\CarModelScreen;
 use App\Orchid\Screens\Examples\ExampleGridScreen;
 use App\Orchid\Screens\Examples\ExampleCardsScreen;
 use App\Orchid\Screens\Examples\ExampleChartsScreen;
@@ -45,6 +46,10 @@ Route::screen('brands', BrandScreen::class)
 //Car Models
 Route::screen('models', CarModelScreen::class)
     ->name('platform.car-models');
+
+//Car Parts
+Route::screen('parts', CarPartScreen::class)
+    ->name('platform.car-parts');
 
 // Platform > Profile
 Route::screen('profile', UserProfileScreen::class)

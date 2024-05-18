@@ -43,6 +43,11 @@ class PlatformProvider extends OrchidServiceProvider
                 ->route('platform.car-models')
                 ->title('Моделі машин'),
 
+            Menu::make('Запчастини машин')
+                ->icon()
+                ->route('platform.car-parts')
+                ->title('Запчастини машин'),
+
             Menu::make('Sample Screen')
                 ->icon('bs.collection')
                 ->route('platform.example')

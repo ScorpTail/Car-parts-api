@@ -5,7 +5,7 @@ namespace App\Http\Controllers\CarPart;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CarPart\CarPartResource;
 use App\Models\Part;
-use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class CarPartController extends Controller
 {
@@ -20,8 +20,8 @@ class CarPartController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Part $part)
+    public function show(Part $carPart)
     {
-        return CarPartResource::make($part);
+        return CarPartResource::make($carPart);
     }
 }
