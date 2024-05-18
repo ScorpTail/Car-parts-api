@@ -33,6 +33,11 @@ Route::group(['as' => 'auth.', 'controller' => AuthController::class], function 
         ->name('refresh');
 });
 
+Route::group(['middleware' => 'auth:sanctum', 'prefix' => 'user/favorite', 'controller' => FavoriteController::class], function () {
+    Route::get('all', 'index');
+    Route::post('/{carPart}', 'store');
+    Route::delete('/', 'destroy');
+});
 
 Route::apiResource('brand', BrandController::class)->only(['index', 'show']);
 Route::apiResource('model', CarModelController::class)->only(['index', 'show']);

@@ -2,48 +2,42 @@
 
 namespace App\Http\Controllers\Favorite;
 
+use App\Models\Part;
+use App\Models\Favorite;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Resources\Favorite\FavoriteResource;
+use App\Services\FavoriteServices\FavoriteService;
 
 class FavoriteController extends Controller
 {
+    public function __construct(public FavoriteService $favoriteService)
+    {
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return FavoriteResource::collection(auth()->user()->favorites);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Part $carPart)
     {
-        //
-    }
+        $this->favoriteService->toggleCarPart($carPart);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
+        return response()->noContent();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy()
     {
-        //
+        Favorite::query()->delete();
+
+        return response()->noContent();
     }
 }
