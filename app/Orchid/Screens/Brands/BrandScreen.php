@@ -2,18 +2,21 @@
 
 namespace App\Orchid\Screens\Brands;
 
-use App\Http\Requests\Barnd\BrandRequest;
 use App\Models\Brand;
-use App\Orchid\Layouts\Brands\BrandInput;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Toast;
 use Orchid\Support\Facades\Layout;
-
+use Illuminate\Http\Client\Request;
 use Orchid\Screen\Actions\ModalToggle;
+
+use App\Http\Requests\Barnd\BrandRequest;
+use App\Orchid\Layouts\Brands\BrandInput;
 use App\Orchid\Layouts\Brands\BrandTable;
+use App\Services\PhotosServices\PhotosServices;
 
 class BrandScreen extends Screen
 {
+
     /**
      * Fetch data to be displayed on the screen.
      *
@@ -69,7 +72,6 @@ class BrandScreen extends Screen
                 ->async('asyncGetBrand'),
         ];
     }
-
     public function store(BrandRequest $request)
     {
         $data = $request->validated();

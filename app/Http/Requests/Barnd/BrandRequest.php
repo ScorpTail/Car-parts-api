@@ -21,8 +21,17 @@ class BrandRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        // dd($this);
+        if ($this->is('admin/*')) {
+            return  [
+                'brand.name' => ['required', 'min:3', 'max:100'],
+                'brand.image_path' => ['required', 'string'],
+            ];
+        }
+
+        return  [
             'brand.name' => ['required', 'min:3', 'max:100'],
+            'brand.image_path' => ['required', 'image', 'max:8192', 'mimes:png,jpg,jpeg,webp'],
         ];
     }
 }

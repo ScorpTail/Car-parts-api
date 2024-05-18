@@ -18,6 +18,7 @@ class BrandResource extends JsonResource
         return [
             'brand_id' => $this->id,
             'name' => $this->name,
+            'image_path' => $this->image_path,
 
             'brand_models' => CarModelResource::collection($this->models),
         ];

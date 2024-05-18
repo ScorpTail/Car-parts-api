@@ -11,9 +11,14 @@ use Orchid\Screen\Layouts\Table;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Actions\ModalToggle;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
+use App\Services\ImageServices\ImageService;
 
 class BrandTable extends Table
 {
+    public function __construct(private ImageService $service)
+    {
+    }
     /**
      * Data source.
      *
@@ -34,14 +39,20 @@ class BrandTable extends Table
         return [
             TD::make('#', '#')
                 ->width('100px')
-                ->align(TD::ALIGN_LEFT)
+                ->alignCenter()
                 ->cantHide()
                 ->render(function (Model $model, object $loop) {
                     return $loop->iteration;
                 }),
 
             TD::make('id', 'ID')
-                ->align(TD::ALIGN_LEFT),
+                ->width('100px')
+                ->alignCenter(),
+
+            TD::make('checkBrandsPhoto', 'Фото бренду')
+                ->width('50px')
+                //->alignLeft()
+                ->render(fn (Brand $brand) => Group::make([$this->linkToTheImage($brand)])),
 
             TD::make('name', 'Назва бренду машини'),
 
@@ -67,5 +78,19 @@ class BrandTable extends Table
                     ])->autoWidth();
                 }),
         ];
+    }
+
+    private function linkToTheImage($model): Group
+    {
+        $fileExists = $this->service->isImageExists($model);
+        return $fileExists
+            ? Group::make([
+                Link::make()
+                    ->href($model->image_path)
+                    ->target('_blank')
+                    ->asyncParameters(['carModel' => $model->id])
+                    ->icon('bs.box-arrow-up-right')
+            ])
+            : Group::make([]);
     }
 }
