@@ -1,18 +1,13 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Brand\BrandController;
-use App\Http\Controllers\Image\ImageController;
-use App\Http\Controllers\Photo\PhotoController;
 use App\Http\Controllers\CarPart\CarPartController;
 use App\Http\Controllers\CarModel\CarModelController;
-
-Route::get('/user', fn (Request $request) => $request->user())
-    ->middleware('auth:sanctum');
-
-Route::get('/getImage/{fileName}', ImageController::class);
+use App\Http\Controllers\Favorite\FavoriteController;
+use App\Http\Controllers\Garage\GarageController;
 
 Route::group(['as' => 'auth.', 'controller' => AuthController::class], function () {
 
@@ -33,6 +28,21 @@ Route::group(['as' => 'auth.', 'controller' => AuthController::class], function 
         ->name('refresh');
 });
 
+
+Route::group(['as.' => 'user.', 'prefix' => 'user', 'controller' => UserController::class], function () {
+    Route::get('{user}', 'showUserProfile')->name('showProfile');
+
+    Route::get('/', 'showCurrentUser')->name('showCurrentUser')->middleware('auth:sanctum');
+
+    Route::post('{user}', 'updateUserProfile')->name('updateProfile')->middleware('auths:sanctum');
+});
+
+Route::group(['middleware' => 'auth:sanctum', 'prefix' => 'user/garage', 'controller' => GarageController::class], function () {
+    Route::get('all', 'index');
+    Route::post('/{carModel}', 'store');
+    Route::delete('/', 'destroy');
+});
+
 Route::group(['middleware' => 'auth:sanctum', 'prefix' => 'user/favorite', 'controller' => FavoriteController::class], function () {
     Route::get('all', 'index');
     Route::post('/{carPart}', 'store');
@@ -40,5 +50,7 @@ Route::group(['middleware' => 'auth:sanctum', 'prefix' => 'user/favorite', 'cont
 });
 
 Route::apiResource('brand', BrandController::class)->only(['index', 'show']);
+
 Route::apiResource('model', CarModelController::class)->only(['index', 'show']);
+
 Route::apiResource('part', CarPartController::class)->only(['index', 'show']);
