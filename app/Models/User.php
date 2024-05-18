@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Part;
 use Orchid\Filters\Types\Like;
 use Orchid\Filters\Types\Where;
-use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Hash;
 use Orchid\Filters\Types\WhereDateStartEnd;
 use Orchid\Platform\Models\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
@@ -70,4 +72,17 @@ class User extends Authenticatable
         'updated_at',
         'created_at',
     ];
+
+
+
+    public function favorites(): BelongsToMany
+    {
+        return $this->belongsToMany(Part::class, 'favorites', 'user_id', 'part_id');
+    }
+
+
+    public function garages(): BelongsToMany
+    {
+        return $this->belongsToMany(CarModel::class, 'garages', 'user_id', 'car_model_id');
+    }
 }
