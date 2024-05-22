@@ -4,10 +4,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Brand\BrandController;
+use App\Http\Controllers\Garage\GarageController;
+use App\Http\Controllers\Search\SerachController;
 use App\Http\Controllers\CarPart\CarPartController;
 use App\Http\Controllers\CarModel\CarModelController;
 use App\Http\Controllers\Favorite\FavoriteController;
-use App\Http\Controllers\Garage\GarageController;
 
 Route::group(['as' => 'auth.', 'controller' => AuthController::class], function () {
 
@@ -48,6 +49,8 @@ Route::group(['middleware' => 'auth:sanctum', 'prefix' => 'user/favorite', 'cont
     Route::post('/{carPart}', 'store');
     Route::delete('/', 'destroy');
 });
+
+Route::get('/search', SerachController::class);
 
 Route::apiResource('brand', BrandController::class)->only(['index', 'show']);
 
