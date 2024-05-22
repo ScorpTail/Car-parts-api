@@ -26,6 +26,7 @@ class CarPartRequest extends FormRequest
         return [
             'carPart.model_id' => ['required', 'exists:car_models,id'],
             'carPart.article' => ['required', 'integer'],
+            'carPart.country_production' => ['required', 'string'],
             'carPart.name' => ['required', 'string', 'min:3', 'max:20'],
             'carPart.description' => ['required', 'string'/*, 'min:100'*/, 'max:1000'],
             'carPart.price' => ['required', 'integer', 'between:0,100000'],

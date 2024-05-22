@@ -5,16 +5,19 @@ namespace App\Http\Controllers\CarPart;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CarPart\CarPartResource;
 use App\Models\Part;
-use Illuminate\Http\Response;
+use Illuminate\Http\Request;
 
 class CarPartController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return CarPartResource::collection(Part::all());
+
+        $data = Part::filter($request);
+
+        return CarPartResource::collection($data);
     }
 
     /**

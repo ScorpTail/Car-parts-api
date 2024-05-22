@@ -37,7 +37,6 @@ class CarPartTable extends Table
     {
         return [
             TD::make('#', '#')
-                ->width('100px')
                 ->align(TD::ALIGN_LEFT)
                 ->cantHide()
                 ->render(function (Model $model, object $loop) {
@@ -47,7 +46,7 @@ class CarPartTable extends Table
             TD::make('id', 'ID')
                 ->align(TD::ALIGN_LEFT),
 
-            TD::make('checkCarModelPhoto', 'Фото Автомобіля')
+            TD::make('checkCarModelPhoto', 'Фото деталі')
                 ->width('50px')
                 ->render(fn (Part $part) => $this->linkToTheImage($part)),
 
@@ -55,6 +54,7 @@ class CarPartTable extends Table
                 ->render(fn ($model) => $model->model->name),
 
             TD::make('name', 'Назва деталі'),
+            TD::make('country_production', 'Країна виробник'),
 
             TD::make('actions', 'Дії')
                 ->width('300px')

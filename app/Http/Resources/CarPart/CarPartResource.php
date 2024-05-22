@@ -17,6 +17,7 @@ class CarPartResource extends JsonResource
         return [
             'car-part_id' => $this->id,
             'model_id' => $this->model_id,
+            'country_production' => $this->country_production,
             'article' => $this->article,
             'name' => $this->name,
             'description' => $this->description,

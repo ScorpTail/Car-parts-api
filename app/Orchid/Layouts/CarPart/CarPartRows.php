@@ -40,6 +40,10 @@ class CarPartRows extends Rows
                 ->title('Назва деталі')
                 ->placeholder('Введіть назву деталі автомобіля')
                 ->required(),
+            Input::make('carPart.country_production')
+                ->title('Країна виробник')
+                ->placeholder('Введіть країну виробника')
+                ->required(),
             TextArea::make('carPart.description')
                 ->rows(5)
                 ->title('Опис деталі')
@@ -64,10 +68,15 @@ class CarPartRows extends Rows
                 ->title('Марка машини')
                 ->placeholder('Оберіть марку мащини...')
                 ->required(),
-            Upload::make('carPart.image_path')
+            Picture::make('carPart.image_path')
+                ->acceptedFiles('image/*')
+                ->maxFileSize(1)
                 ->title('Зображення деталі')
-                ->required()
-                ->acceptedFiles('image/*'),
+                ->required(),
+            // Upload::make('carPart.image_path')
+            //     ->title('Зображення деталі')
+            //     ->required()
+            //     ->acceptedFiles('image/*'),
         ];
     }
 }

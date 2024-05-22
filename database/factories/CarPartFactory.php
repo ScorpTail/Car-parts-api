@@ -29,6 +29,7 @@ class CarPartFactory extends Factory
         return [
             'model_id' => CarModel::all()->random()->id,
             'article' => fake()->numberBetween(0, 1000000),
+            'country_production' => $this->faker->country(),
             'name' => fake()->name(),
             'description' => fake()->text(),
             'price' => fake()->randomFloat(2, 100, 10000),

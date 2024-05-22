@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Traits\Filterable;
 use Orchid\Screen\AsSource;
 use App\Enum\StatusProductEnum;
 use App\Casts\StatusProductCast;
+use Orchid\Attachment\Attachable;
 use Database\Factories\CarPartFactory;
 use Illuminate\Database\Eloquent\Model;
 use Orchid\Attachment\Models\Attachment;
@@ -12,11 +14,10 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Orchid\Attachment\Attachable;
 
 class Part extends Model
 {
-    use AsSource, HasFactory, Attachable;
+    use AsSource, HasFactory, Attachable, Filterable;
 
     /**
      * The table associated with the model.
@@ -37,7 +38,8 @@ class Part extends Model
         'description',
         'price',
         'status',
-        'image_path'
+        'image_path',
+        'country_production',
     ];
 
     /**

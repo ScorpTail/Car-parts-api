@@ -96,7 +96,6 @@ class CarPartScreen extends Screen
 
     public function asyncGetCarPart(Part $carPart): array
     {
-        $carPart->load('attachment');
         return [
             'carPart' => $carPart
         ];
