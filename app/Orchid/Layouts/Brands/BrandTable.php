@@ -38,19 +38,20 @@ class BrandTable extends Table
     {
         return [
             TD::make('#', '#')
-                ->width('100px')
-                ->alignCenter()
+
+                ->align(TD::ALIGN_LEFT)
                 ->cantHide()
                 ->render(function (Model $model, object $loop) {
                     return $loop->iteration;
                 }),
 
             TD::make('id', 'ID')
-                ->width('100px')
-                ->alignCenter(),
+
+                ->align(TD::ALIGN_LEFT),
 
             TD::make('checkBrandsPhoto', 'Фото бренду')
-                ->width('50px')
+
+                ->align(TD::ALIGN_LEFT)
                 //->alignLeft()
                 ->render(fn (Brand $brand) => Group::make([$this->linkToTheImage($brand)])),
 
