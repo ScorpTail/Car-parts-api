@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Part;
 use App\Models\CarModel;
+use App\Services\CarProviderFaker\CarFaker;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -26,11 +27,12 @@ class CarPartFactory extends Factory
      */
     public function definition(): array
     {
+        $this->faker->addProvider(new CarFaker($this->faker));
         return [
             'model_id' => CarModel::all()->random()->id,
             'article' => fake()->numberBetween(0, 1000000),
             'country_production' => $this->faker->country(),
-            'name' => fake()->name(),
+            'name' => $this->faker->carPart(),
             'description' => fake()->text(),
             'price' => fake()->randomFloat(2, 100, 10000),
             'status' => fake()->numberBetween(1, 3),
