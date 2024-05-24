@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Brand\BrandController;
@@ -49,6 +50,8 @@ Route::group(['middleware' => 'auth:sanctum', 'prefix' => 'user/favorite', 'cont
     Route::post('/{carPart}', 'store');
     Route::delete('/', 'destroy');
 });
+
+Route::get('/getImage/{fileName}', ImageController::class)->where('fileName', '.*');;
 
 Route::get('/search', SerachController::class);
 

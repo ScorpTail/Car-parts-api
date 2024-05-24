@@ -18,8 +18,9 @@ class CarModelResource extends JsonResource
             'car-model_id' => $this->id,
             'brand_id' => $this->brand_id,
             'name' => $this->name,
+            'image_path' => $this->image_path,
 
-            
+
         ];
     }
 }

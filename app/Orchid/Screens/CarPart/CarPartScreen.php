@@ -72,11 +72,7 @@ class CarPartScreen extends Screen
     {
         $data = $request->validated();
 
-        $carPart = Part::create($data['carPart']);
-
-        $carPart->attachment()->syncWithoutDetaching(
-            $request->input('carPart.image_path')
-        );
+        Part::create($data['carPart']);
 
         Toast::success('Нову модель успішно додано');
     }

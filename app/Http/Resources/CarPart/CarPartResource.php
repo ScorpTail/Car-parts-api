@@ -23,6 +23,7 @@ class CarPartResource extends JsonResource
             'description' => $this->description,
             'price' => $this->price,
             'status' => $this->status,
+            'image_path' => $this->image_path,
 
             'created_at' => $this->created_at,
             'isDeleted' => $this->emptyDeletedAtRows(),
