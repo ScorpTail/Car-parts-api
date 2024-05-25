@@ -42,10 +42,10 @@ class BrandRequest extends FormRequest
     protected function prepareForValidation()
     {
         if ($this->is('admin/*')) {
-            // Transform the image path using the ImageService
+
             $image_path = $this->service->relativePath($this->input('brand.image_path'));
 
-            // Merge the transformed image path back into the request
+
             $this->merge([
                 'brand' => [
                     'image_path' => $image_path,

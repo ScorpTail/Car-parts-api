@@ -3,6 +3,7 @@
 namespace App\Http\Requests\CarModel;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Services\ImageServices\ImageService;
 
 class CarModelRequest extends FormRequest
 {
@@ -12,6 +13,10 @@ class CarModelRequest extends FormRequest
     public function authorize(): bool
     {
         return true;
+    }
+
+    public function __construct(private ImageService $service)
+    {
     }
 
     /**
@@ -33,5 +38,16 @@ class CarModelRequest extends FormRequest
             'carModel.name' => ['required', 'min:3', 'max:100'],
             'carModel.image_path' => ['required', 'image', 'max:8192', 'mimes:png,jpg,jpeg,webp'],
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $carModel = $this->input('carModel');
+        if ($this->is('admin/*')) {
+
+            $carModel['image_path'] = $this->service->relativePath($this->input('carModel.image_path'));
+        }
+
+        $this->merge(['carModel' => $carModel]);
     }
 }

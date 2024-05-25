@@ -5,6 +5,7 @@ namespace App\Http\Requests\CarPart;
 use App\Enum\StatusProductEnum;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use App\Services\ImageServices\ImageService;
 
 class CarPartRequest extends FormRequest
 {
@@ -14,6 +15,10 @@ class CarPartRequest extends FormRequest
     public function authorize(): bool
     {
         return true;
+    }
+
+    public function __construct(private ImageService $service)
+    {
     }
 
     /**
@@ -41,8 +46,8 @@ class CarPartRequest extends FormRequest
         $carPart = $this->input('carPart');
         $carPart['article'] = random_int(0, 1000000);
 
-        if (is_array($carPart['image_path'])) {
-            $carPart['image_path'] = join(',', $carPart['image_path']);
+        if ($this->is('admin/*')) {
+            $carPart['image_path'] = $this->service->relativePath($carPart['image_path']);
         }
 
         $this->merge([
