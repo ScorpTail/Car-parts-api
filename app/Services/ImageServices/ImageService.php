@@ -11,7 +11,7 @@ class ImageService
     {
         $imagePath = $this->getImagePath($model);
 
-        $relativePath = str_replace(env('APP_URL') . '/storage/', '', $imagePath);
+        $relativePath = $this->relativePath($imagePath);
 
         $fileExists = Storage::disk('public')->exists($relativePath);
 
@@ -34,5 +34,10 @@ class ImageService
     private function getImagePath($image): string
     {
         return is_string($image) ? $image : $image->image_path;
+    }
+
+    public function relativePath($path): string
+    {
+        return str_replace(env('APP_URL') . '/storage/', '', $path);
     }
 }

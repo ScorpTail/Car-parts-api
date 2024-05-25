@@ -87,7 +87,7 @@ class BrandTable extends Table
         return $fileExists
             ? Group::make([
                 Link::make()
-                    ->href($model->image_path)
+                    ->href(env('APP_URL') . '/storage/' . $model->image_path)
                     ->target('_blank')
                     ->asyncParameters(['carModel' => $model->id])
                     ->icon('bs.box-arrow-up-right')
