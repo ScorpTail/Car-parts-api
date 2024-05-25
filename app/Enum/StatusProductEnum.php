@@ -11,10 +11,10 @@ enum StatusProductEnum: int
     public function label(): string
     {
         return match ($this) {
-            self::AVAIABLE => 'Available',
-            self::NOTAVAIABLE => 'Not Available',
-            self::ENDED => 'Ended',
-            default => 'Available',
+            self::AVAIABLE => 'В наявності',
+            self::NOTAVAIABLE => 'Нема в наявності',
+            self::ENDED => 'Закінчилось',
+            default => 'В наявності',
         };
     }
 }
