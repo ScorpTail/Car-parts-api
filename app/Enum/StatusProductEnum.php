@@ -14,6 +14,7 @@ enum StatusProductEnum: int
             self::AVAIABLE => 'Available',
             self::NOTAVAIABLE => 'Not Available',
             self::ENDED => 'Ended',
+            default => 'Available',
         };
     }
 }

@@ -23,8 +23,8 @@ class CarPartController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Part $carPart)
+    public function show(Part $part)
     {
-        return CarPartResource::make($carPart);
+        return CarPartResource::make($part);
     }
 }
