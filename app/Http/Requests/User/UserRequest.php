@@ -22,8 +22,10 @@ class UserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'min:3', 'max:20'],
-            'email' => ['required', 'string', 'unique:users,email', 'email:rfc,dns', 'ends_with:.com, .net, .ua'],
+            'name' => ['sometimes', 'string', 'min:3', 'max:20'],
+            'email' => ['sometimes', 'string', 'unique:users,email', 'email:rfc,dns', 'ends_with:.com, .net, .ua'],
+            'current_password' => ['required_with:password', 'current_password:sanctum'],
+            'password' => ['sometimes', 'confirmed'],
         ];
     }
 }

@@ -36,7 +36,7 @@ Route::group(['as.' => 'user.', 'prefix' => 'user', 'controller' => UserControll
 
     Route::get('/', 'showCurrentUser')->name('showCurrentUser')->middleware('auth:sanctum');
 
-    Route::post('{user}', 'updateUserProfile')->name('updateProfile')->middleware('auths:sanctum');
+    Route::post('{user}', 'updateUserProfile')->name('updateProfile')->middleware('auth:sanctum');
 });
 
 Route::group(['middleware' => 'auth:sanctum', 'prefix' => 'user/garage', 'controller' => GarageController::class], function () {
