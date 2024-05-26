@@ -37,7 +37,7 @@ class CarModelInput extends Rows
                 ->required(),
             Picture::make('carModel.image_path')
                 ->acceptedFiles('image/*')
-                ->maxFileSize(1)
+                ->maxFileSize(8)
                 ->placeholder('Зображення бренду')
                 ->help('Додайте зображення бренду')
                 ->title('Бренд')

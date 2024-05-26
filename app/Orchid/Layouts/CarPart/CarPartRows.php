@@ -70,7 +70,7 @@ class CarPartRows extends Rows
                 ->required(),
             Picture::make('carPart.image_path')
                 ->acceptedFiles('image/*')
-                ->maxFileSize(1)
+                ->maxFileSize(8)
                 ->title('Зображення деталі')
                 ->required(),
             // Upload::make('carPart.image_path')
