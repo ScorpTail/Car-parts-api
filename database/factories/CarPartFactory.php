@@ -25,13 +25,24 @@ class CarPartFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    private $currentBrandIndex = 0;
     public function definition(): array
     {
         $this->faker->addProvider(new CarFaker($this->faker));
+
+
+        if ($this->currentBrandIndex >= CarModel::all()->count()) {
+            $this->currentBrandIndex = 0;
+        }
+
+        $model = CarModel::orderBy('id')->skip($this->currentBrandIndex)->first();
+
+        $this->currentBrandIndex++;
+
         return [
-            'model_id' => CarModel::all()->random()->id,
+            'model_id' => $model->id,
             'article' => fake()->numberBetween(0, 1000000),
-            'country_production' => $this->faker->country(),
+            'country_production' => $this->faker->countries(),
             'name' => $this->faker->carPart(),
             'description' => fake()->text(),
             'price' => fake()->randomFloat(2, 100, 10000),

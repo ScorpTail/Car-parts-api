@@ -104,4 +104,14 @@ class CarFaker extends \Faker\Provider\Base
 
         return $this->generator->randomElement($carParts);
     }
+
+    public function countries()
+    {
+        $ukrainianCountries = [
+            'Німеччина', 'Китай', 'Польща', 'Румунія', 'Угорщина', 'Словаччина', 'Чехія',
+            'Литва', 'Латвія', 'Естонія',
+        ];
+
+        return $this->generator->randomElement($ukrainianCountries);
+    }
 }

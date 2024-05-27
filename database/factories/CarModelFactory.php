@@ -31,7 +31,7 @@ class CarModelFactory extends Factory
         $this->currentBrandIndex++;
 
 
-        $modelName = $this->faker->carModel($brand->name);
+        $modelName = $this->faker->unique()->carModel($brand->name);
 
         return [
             'name' => $modelName,

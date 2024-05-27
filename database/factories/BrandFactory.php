@@ -21,9 +21,8 @@ class BrandFactory extends Factory
         $this->faker->addProvider(new CarFaker($this->faker));
 
         return [
-            'name' => $this->faker->carBrand(),
+            'name' => $this->faker->unique()->carBrand(),
             'image_path' => '2024/05/16/fa3218c68db627151ddf621f381a8572d589b501.png',
         ];
     }
-
 }
